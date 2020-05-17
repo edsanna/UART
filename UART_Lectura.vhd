@@ -5,7 +5,7 @@ use ieee.std_logic_1164.all;
 entity UART_Lectura is
 port( read_en, rst, clk: in std_logic;
 tx_rdy:  out std_logic;
-tx_data: out std_logic_vector(7 DOWNTO 0);
+tx_data_read: out std_logic_vector(7 DOWNTO 0);
 tx: in std_logic);
 end UART_Lectura;
 
@@ -13,6 +13,7 @@ architecture FSM of UART_Lectura is
 type state_type is(S0,S1,S2,S3,S4);
 signal State, NextState : state_type;
 signal Bit_count: natural range 0 to 8;
+signal tx_data: std_logic_vector(7 DOWNTO 0);
 
 
 begin
@@ -25,7 +26,7 @@ if rising_edge(clk) then
 	else
 		case State is
 			when S0 =>
-				if(read_en = '1') then
+				if(read_en = '0') then
 					State <= S1;
 				end if;
 				
@@ -47,11 +48,10 @@ if rising_edge(clk) then
 				if(tx = '1') then
 					State <= S4;
 				end if;
-			when S4 =>
+			when S4 => 
 				if(tx = '1') then
 					State <= S0;
 				end if;
-			
 			end case;
 		end if;
 	end if;
@@ -73,11 +73,9 @@ begin
 			
 			when S3 =>
 				tx_rdy <='0';
-				
+				tx_data_read <= tx_data;
 			when S4 =>
 				tx_rdy <='0';
-			
-			
 			end case;
 end process;
 end FSM;

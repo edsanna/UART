@@ -9,7 +9,7 @@
 
   http://www.arduino.cc/en/Tutorial/AnalogReadSerial
 */
-
+//SERIAL_8N2
 // the setup routine runs once when you press reset:
 void setup() {
   // initialize serial communication at 9600 bits per second:
@@ -19,6 +19,7 @@ void setup() {
 // the loop routine runs over and over again forever:
 void loop() {
   // print out the value you read:
-  Serial.print(Serial.read());
-  Serial.flush();        // delay in between reads for stability
+  Serial.print(255);
+  //Serial.flush();        // delay in between reads for stability
+  delay(500);
 }
